@@ -8,3 +8,4 @@ linters:
     - gosec
     - lll
     - wsl
+    - gomnd
