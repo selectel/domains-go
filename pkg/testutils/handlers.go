@@ -41,7 +41,7 @@ func HandleReqWithoutBody(t *testing.T, opts *HandleReqOpts) {
 	opts.Mux.HandleFunc(opts.URL, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "application/json")
 		w.WriteHeader(opts.Status)
-		fmt.Fprint(w, opts.RawResponse)
+		_, _ = fmt.Fprint(w, opts.RawResponse)
 
 		if r.Method != opts.Method {
 			t.Fatalf("expected %s method but got %s", opts.Method, r.Method)
@@ -72,7 +72,7 @@ func HandleReqWithBody(t *testing.T, opts *HandleReqOpts) {
 
 		w.Header().Add("Content-Type", "application/json")
 		w.WriteHeader(opts.Status)
-		fmt.Fprint(w, opts.RawResponse)
+		_, _ = fmt.Fprint(w, opts.RawResponse)
 
 		var expectedRequest interface{}
 		err = json.Unmarshal([]byte(opts.RawRequest), &expectedRequest)
