@@ -71,6 +71,79 @@ var expectedListResponse = []*domain.View{
 	},
 }
 
+// testCreateDomainResponseRaw represents a raw response from the Create request.
+const testCreateDomainResponseRaw = `
+{
+   "create_date" : 1585643272,
+   "user_id" : 12345,
+   "name" : "testdomain.xyz",
+   "tags" : [],
+   "id" : 225474,
+   "change_date" : 1585639110
+}
+`
+
+// expectedListResponse represents an unmarshalled testListResponseRaw.
+var expectedCreateDomainResponse = &domain.View{
+	ID:         225474,
+	UserID:     12345,
+	Name:       "testdomain.xyz",
+	CreateDate: 1585643272,
+	ChangeDate: 1585639110,
+	Tags:       []string{},
+}
+
+// testCreateDomainOptsRaw represents marshalled options for the Create request.
+const testCreateDomainOptsRaw = `
+{
+	"name": "testdomain.xyz"
+}
+`
+
+// testCreateDomainOpts represents options for the Create request.
+var testCreateDomainOpts = &domain.CreateOpts{
+	Name: "testdomain.xyz",
+}
+
+// testCreateDomainWithFileZoneResponseRaw represents a raw response from the Create request.
+const testCreateDomainWithBindZoneResponseRaw = `
+{
+   "domain" : {
+      "create_date" : 1585643272,
+      "user_id" : 12345,
+      "name" : "testdomain.xyz",
+      "tags" : [],
+      "id" : 225474,
+      "change_date" : 1585639110
+   },
+   "records" : []
+}
+`
+
+// expectedListResponse represents an unmarshalled testListResponseRaw.
+var expectedCreateDomainWithBindZoneResponse = &domain.View{
+	ID:         225474,
+	UserID:     12345,
+	Name:       "testdomain.xyz",
+	CreateDate: 1585643272,
+	ChangeDate: 1585639110,
+	Tags:       []string{},
+}
+
+// testCreateDomainOptsRaw represents marshalled options for the Create request.
+const testCreateDomainWithBindZoneOptsRaw = `
+{
+     "name": "testdomain.xyz",
+     "bind_zone": "@ IN SOA ns.test.org. support.selectel.ru. (2020050349 10800 3600 604800 300)"
+}
+`
+
+// testCreateDomainOpts represents options for the Create request.
+var testCreateDomainWithBindZoneOpts = &domain.CreateOpts{
+	Name:     "testdomain.xyz",
+	BindZone: "@ IN SOA ns.test.org. support.selectel.ru. (2020050349 10800 3600 604800 300)",
+}
+
 // testErrGenericResponseRaw represents a raw response with an error in the generic format.
 const testErrGenericResponseRaw = `{"error":"bad gateway"}`
 

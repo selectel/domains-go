@@ -1,7 +1,9 @@
 package domain
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
@@ -70,4 +72,43 @@ func List(ctx context.Context, client *v1.ServiceClient) ([]*View, *v1.ResponseR
 	}
 
 	return domains, responseResult, nil
+}
+
+// Create requests a creation of a new domain.
+func Create(ctx context.Context, client *v1.ServiceClient, opts *CreateOpts) (*View, *v1.ResponseResult, error) {
+	requestBody, err := json.Marshal(opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	url := client.Endpoint + "/"
+	responseResult, err := client.DoRequest(ctx, http.MethodPost, url, bytes.NewReader(requestBody))
+	if err != nil {
+		return nil, nil, err
+	}
+	if responseResult.Err != nil {
+		return nil, responseResult, responseResult.Err
+	}
+
+	if opts.BindZone != "" {
+		result := struct {
+			Domain *View `json:"domain"`
+		}{}
+
+		// Extract domain from the response body.
+		err = responseResult.ExtractResult(&result)
+		if err != nil {
+			return nil, responseResult, err
+		}
+		return result.Domain, responseResult, nil
+	}
+
+	// Extract domain from the response body.
+	domain := &View{}
+	err = responseResult.ExtractResult(domain)
+	if err != nil {
+		return nil, responseResult, err
+	}
+
+	return domain, responseResult, nil
 }
