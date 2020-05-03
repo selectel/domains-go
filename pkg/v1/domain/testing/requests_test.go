@@ -455,3 +455,301 @@ func TestListUnmarshallError(t *testing.T) {
 		t.Fatal("expected error from the Get method")
 	}
 }
+
+func TestCreateDomain(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         "/v1/",
+		RawResponse: testCreateDomainResponseRaw,
+		RawRequest:  testCreateDomainOptsRaw,
+		Method:      http.MethodPost,
+		Status:      http.StatusOK,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := domain.Create(ctx, testClient, testCreateDomainOpts)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Create method")
+	}
+	if httpResponse.StatusCode != http.StatusOK {
+		t.Fatalf("expected %d status in the HTTP response, but got %d",
+			http.StatusOK, httpResponse.StatusCode)
+	}
+	if !reflect.DeepEqual(expectedCreateDomainResponse, actual) {
+		t.Fatalf("expected %#v, but got %#v", expectedCreateDomainResponse, actual)
+	}
+}
+
+func TestCreateDomainHTTPError(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithoutBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         "/v1/",
+		RawResponse: testErrGenericResponseRaw,
+		Method:      http.MethodPost,
+		Status:      http.StatusBadGateway,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := domain.Create(ctx, testClient, testCreateDomainOpts)
+
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if actual != nil {
+		t.Fatal("expected no cluster from the Get method")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Get method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Get method")
+	}
+	if httpResponse.StatusCode != http.StatusBadGateway {
+		t.Fatalf("expected %d status in the HTTP response, but got %d",
+			http.StatusBadGateway, httpResponse.StatusCode)
+	}
+}
+
+func TestCreateTimeoutError(t *testing.T) {
+	testEnv := testutils.SetupTestEnv()
+	testEnv.Server.Close()
+	defer testEnv.TearDownTestEnv()
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := domain.Create(ctx, testClient, testCreateDomainOpts)
+
+	if actual != nil {
+		t.Fatal("expected no cluster from the Get method")
+	}
+	if httpResponse != nil {
+		t.Fatal("expected no HTTP response from the Get method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Get method")
+	}
+}
+
+func TestCreateUnmarshallError(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithoutBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         "/v1/",
+		RawResponse: testListInvalidResponseRaw,
+		Method:      http.MethodPost,
+		Status:      http.StatusOK,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := domain.Create(ctx, testClient, testCreateDomainOpts)
+
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if actual != nil {
+		t.Fatal("expected no cluster from the Get method")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Get method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Get method")
+	}
+}
+
+func TestCreateDomainWithBindZone(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         "/v1/",
+		RawResponse: testCreateDomainWithBindZoneResponseRaw,
+		RawRequest:  testCreateDomainWithBindZoneOptsRaw,
+		Method:      http.MethodPost,
+		Status:      http.StatusOK,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := domain.Create(ctx, testClient, testCreateDomainWithBindZoneOpts)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Create method")
+	}
+	if httpResponse.StatusCode != http.StatusOK {
+		t.Fatalf("expected %d status in the HTTP response, but got %d",
+			http.StatusOK, httpResponse.StatusCode)
+	}
+	if !reflect.DeepEqual(expectedCreateDomainWithBindZoneResponse, actual) {
+		t.Fatalf("expected %#v, but got %#v", expectedCreateDomainWithBindZoneResponse, actual)
+	}
+}
+
+func TestCreateDomainWithBindZoneHTTPError(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithoutBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         "/v1/",
+		RawResponse: testErrGenericResponseRaw,
+		Method:      http.MethodPost,
+		Status:      http.StatusBadGateway,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := domain.Create(ctx, testClient, testCreateDomainWithBindZoneOpts)
+
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if actual != nil {
+		t.Fatal("expected no cluster from the Get method")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Get method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Get method")
+	}
+	if httpResponse.StatusCode != http.StatusBadGateway {
+		t.Fatalf("expected %d status in the HTTP response, but got %d",
+			http.StatusBadGateway, httpResponse.StatusCode)
+	}
+}
+
+func TestCreateWithBindZoneTimeoutError(t *testing.T) {
+	testEnv := testutils.SetupTestEnv()
+	testEnv.Server.Close()
+	defer testEnv.TearDownTestEnv()
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := domain.Create(ctx, testClient, testCreateDomainWithBindZoneOpts)
+
+	if actual != nil {
+		t.Fatal("expected no cluster from the Get method")
+	}
+	if httpResponse != nil {
+		t.Fatal("expected no HTTP response from the Get method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Get method")
+	}
+}
+
+func TestCreateWithBindZoneUnmarshallError(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithoutBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         "/v1/",
+		RawResponse: testListInvalidResponseRaw,
+		Method:      http.MethodPost,
+		Status:      http.StatusOK,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := domain.Create(ctx, testClient, testCreateDomainWithBindZoneOpts)
+
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if actual != nil {
+		t.Fatal("expected no cluster from the Get method")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Get method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Get method")
+	}
+}
