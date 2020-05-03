@@ -50,8 +50,8 @@ type ServiceClient struct {
 	// HTTPClient represents an initialized HTTP client that will be used to do requests.
 	HTTPClient *http.Client
 
-	// TokenID is a client authentication token.
-	TokenID string
+	// Token is a client authentication token.
+	Token string
 
 	// Endpoint represents an endpoint that will be used in all requests.
 	Endpoint string
@@ -61,10 +61,10 @@ type ServiceClient struct {
 }
 
 // NewDomainsClientV1 initializes a new client for the Domains API V1.
-func NewDomainsClientV1(tokenID, endpoint string) *ServiceClient {
+func NewDomainsClientV1(token, endpoint string) *ServiceClient {
 	return &ServiceClient{
 		HTTPClient: newHTTPClient(),
-		TokenID:    tokenID,
+		Token:      token,
 		Endpoint:   endpoint,
 		UserAgent:  userAgent,
 	}
@@ -73,13 +73,13 @@ func NewDomainsClientV1(tokenID, endpoint string) *ServiceClient {
 // NewDomainsClientV1WithCustomHTTP initializes a new client for the Domains API V1
 // using custom HTTP client.
 // If customHTTPClient is nil - default HTTP client will be used.
-func NewDomainsClientV1WithCustomHTTP(customHTTPClient *http.Client, tokenID, endpoint string) *ServiceClient {
+func NewDomainsClientV1WithCustomHTTP(customHTTPClient *http.Client, token, endpoint string) *ServiceClient {
 	if customHTTPClient == nil {
 		customHTTPClient = newHTTPClient()
 	}
 	return &ServiceClient{
 		HTTPClient: customHTTPClient,
-		TokenID:    tokenID,
+		Token:      token,
 		Endpoint:   endpoint,
 		UserAgent:  userAgent,
 	}
@@ -118,7 +118,7 @@ func (client *ServiceClient) DoRequest(ctx context.Context, method, path string,
 	}
 
 	request.Header.Set("User-Agent", client.UserAgent)
-	request.Header.Set("X-Token", client.TokenID)
+	request.Header.Set("X-Token", client.Token)
 	if body != nil {
 		request.Header.Set("Content-Type", "application/json")
 	}

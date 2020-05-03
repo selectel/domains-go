@@ -14,21 +14,21 @@ import (
 )
 
 func TestNewDomainsClientV1(t *testing.T) {
-	token := testutils.TokenID
+	token := testutils.Token
 	endpoint := "http://example.org"
 	expected := &ServiceClient{
-		TokenID:   token,
+		Token:     token,
 		Endpoint:  endpoint,
 		UserAgent: userAgent,
 	}
 
 	actual := NewDomainsClientV1(token, endpoint)
 
-	if expected.TokenID != actual.TokenID {
+	if expected.Token != actual.Token {
 		t.Errorf("expected Endpoint %s, but got %s", expected.Endpoint, actual.Endpoint)
 	}
 	if expected.Endpoint != actual.Endpoint {
-		t.Errorf("expected TokenID %s, but got %s", expected.TokenID, actual.TokenID)
+		t.Errorf("expected Token %s, but got %s", expected.Token, actual.Token)
 	}
 	if expected.UserAgent != actual.UserAgent {
 		t.Errorf("expected UserAgent %s, but got %s", expected.UserAgent, actual.UserAgent)
@@ -39,10 +39,10 @@ func TestNewDomainsClientV1(t *testing.T) {
 }
 
 func TestNewDomainsClientV1WithCustomHTTP(t *testing.T) {
-	token := testutils.TokenID
+	token := testutils.Token
 	endpoint := "http://example.org"
 	expected := &ServiceClient{
-		TokenID:   token,
+		Token:     token,
 		Endpoint:  endpoint,
 		UserAgent: userAgent,
 	}
@@ -53,11 +53,11 @@ func TestNewDomainsClientV1WithCustomHTTP(t *testing.T) {
 
 	actual := NewDomainsClientV1WithCustomHTTP(customHTTPClient, token, endpoint)
 
-	if expected.TokenID != actual.TokenID {
+	if expected.Token != actual.Token {
 		t.Errorf("expected Endpoint %s, but got %s", expected.Endpoint, actual.Endpoint)
 	}
 	if expected.Endpoint != actual.Endpoint {
-		t.Errorf("expected TokenID %s, but got %s", expected.TokenID, actual.TokenID)
+		t.Errorf("expected Token %s, but got %s", expected.Token, actual.Token)
 	}
 	if expected.UserAgent != actual.UserAgent {
 		t.Errorf("expected UserAgent %s, but got %s", expected.UserAgent, actual.UserAgent)
@@ -79,12 +79,14 @@ func TestDoGetRequest(t *testing.T) {
 		}
 	})
 
+	token := testutils.Token
+	userAgent := testutils.UserAgent
 	endpoint := testEnv.Server.URL + "/"
 	client := &ServiceClient{
 		HTTPClient: &http.Client{},
 		Endpoint:   endpoint,
-		TokenID:    "token",
-		UserAgent:  "agent",
+		Token:      token,
+		UserAgent:  userAgent,
 	}
 
 	ctx := context.Background()
@@ -117,12 +119,14 @@ func TestDoPostRequest(t *testing.T) {
 		}
 	})
 
+	token := testutils.Token
+	userAgent := testutils.UserAgent
 	endpoint := testEnv.Server.URL + "/"
 	client := &ServiceClient{
 		HTTPClient: &http.Client{},
 		Endpoint:   endpoint,
-		TokenID:    "token",
-		UserAgent:  "agent",
+		Token:      token,
+		UserAgent:  userAgent,
 	}
 
 	requestBody, err := json.Marshal(&struct {
@@ -160,12 +164,14 @@ func TestDoErrNotFoundRequest(t *testing.T) {
 		}
 	})
 
+	token := testutils.Token
+	userAgent := testutils.UserAgent
 	endpoint := testEnv.Server.URL + "/"
 	client := &ServiceClient{
 		HTTPClient: &http.Client{},
 		Endpoint:   endpoint,
-		TokenID:    "token",
-		UserAgent:  "agent",
+		Token:      token,
+		UserAgent:  userAgent,
 	}
 
 	ctx := context.Background()
@@ -197,12 +203,14 @@ func TestDoErrGenericRequest(t *testing.T) {
 		}
 	})
 
+	token := testutils.Token
+	userAgent := testutils.UserAgent
 	endpoint := testEnv.Server.URL + "/"
 	client := &ServiceClient{
 		HTTPClient: &http.Client{},
 		Endpoint:   endpoint,
-		TokenID:    "token",
-		UserAgent:  "agent",
+		Token:      token,
+		UserAgent:  userAgent,
 	}
 
 	ctx := context.Background()
@@ -235,12 +243,14 @@ func TestDoErrNoContentRequest(t *testing.T) {
 		}
 	})
 
+	token := testutils.Token
+	userAgent := testutils.UserAgent
 	endpoint := testEnv.Server.URL + "/"
 	client := &ServiceClient{
 		HTTPClient: &http.Client{},
 		Endpoint:   endpoint,
-		TokenID:    "token",
-		UserAgent:  "agent",
+		Token:      token,
+		UserAgent:  userAgent,
 	}
 
 	ctx := context.Background()
