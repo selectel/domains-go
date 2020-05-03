@@ -18,5 +18,14 @@ Example of getting a single domain by its name
   }
   fmt.Printf("%+v\n", selectelDomain)
 
+Example of getting a list of domains
+
+  selectelDomains, _, err := domain.List(ctx, serviceClient)
+  if err != nil {
+    log.Fatal(err)
+  }
+  for _, d := range selectelDomains {
+    fmt.Printf("%+v\n", d)
+  }
 */
 package domain
