@@ -50,3 +50,24 @@ func GetByName(ctx context.Context, client *v1.ServiceClient, domainName string)
 
 	return domain, responseResult, nil
 }
+
+// List gets a list of all domains.
+func List(ctx context.Context, client *v1.ServiceClient) ([]*View, *v1.ResponseResult, error) {
+	url := client.Endpoint + "/"
+	responseResult, err := client.DoRequest(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	if responseResult.Err != nil {
+		return nil, responseResult, responseResult.Err
+	}
+
+	// Extract domains from the response body.
+	var domains []*View
+	err = responseResult.ExtractResult(&domains)
+	if err != nil {
+		return nil, responseResult, err
+	}
+
+	return domains, responseResult, nil
+}
