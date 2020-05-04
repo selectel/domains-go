@@ -82,7 +82,7 @@ func TestGetByIDHTTPError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse == nil {
 		t.Fatal("expected an HTTP response from the Get method")
@@ -112,7 +112,7 @@ func TestGetByIDTimeoutError(t *testing.T) {
 	actual, httpResponse, err := domain.GetByID(ctx, testClient, testDomainID)
 
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse != nil {
 		t.Fatal("expected no HTTP response from the Get method")
@@ -150,7 +150,7 @@ func TestGetByIDUnmarshallError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse == nil {
 		t.Fatal("expected an HTTP response from the Get method")
@@ -230,7 +230,7 @@ func TestGetByNameHTTPError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse == nil {
 		t.Fatal("expected an HTTP response from the Get method")
@@ -260,7 +260,7 @@ func TestGetByNameTimeoutError(t *testing.T) {
 	actual, httpResponse, err := domain.GetByName(ctx, testClient, testDomainName)
 
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse != nil {
 		t.Fatal("expected no HTTP response from the Get method")
@@ -298,7 +298,7 @@ func TestGetByNameUnmarshallError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse == nil {
 		t.Fatal("expected an HTTP response from the Get method")
@@ -378,7 +378,7 @@ func TestListHTTPError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse == nil {
 		t.Fatal("expected an HTTP response from the Get method")
@@ -408,7 +408,7 @@ func TestListTimeoutError(t *testing.T) {
 	actual, httpResponse, err := domain.List(ctx, testClient)
 
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse != nil {
 		t.Fatal("expected no HTTP response from the Get method")
@@ -446,7 +446,7 @@ func TestListUnmarshallError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse == nil {
 		t.Fatal("expected an HTTP response from the Get method")
@@ -527,7 +527,7 @@ func TestCreateDomainHTTPError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse == nil {
 		t.Fatal("expected an HTTP response from the Get method")
@@ -557,7 +557,7 @@ func TestCreateTimeoutError(t *testing.T) {
 	actual, httpResponse, err := domain.Create(ctx, testClient, testCreateDomainOpts)
 
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse != nil {
 		t.Fatal("expected no HTTP response from the Get method")
@@ -595,7 +595,7 @@ func TestCreateUnmarshallError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse == nil {
 		t.Fatal("expected an HTTP response from the Get method")
@@ -676,7 +676,7 @@ func TestCreateDomainWithBindZoneHTTPError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse == nil {
 		t.Fatal("expected an HTTP response from the Get method")
@@ -706,7 +706,7 @@ func TestCreateWithBindZoneTimeoutError(t *testing.T) {
 	actual, httpResponse, err := domain.Create(ctx, testClient, testCreateDomainWithBindZoneOpts)
 
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse != nil {
 		t.Fatal("expected no HTTP response from the Get method")
@@ -744,7 +744,7 @@ func TestCreateWithBindZoneUnmarshallError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no cluster from the Get method")
+		t.Fatal("expected no domain from the Get method")
 	}
 	if httpResponse == nil {
 		t.Fatal("expected an HTTP response from the Get method")
