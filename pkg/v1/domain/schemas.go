@@ -5,10 +5,10 @@ type View struct {
 	// ID is the identifier of the domain.
 	ID int `json:"id"`
 
-	// CreateDate represents Unix time when domain has been created.
+	// CreateDate represents Unix timestamp when domain has been created.
 	CreateDate int `json:"create_date"`
 
-	// ChangeDate represents Unix time when domain has been modified.
+	// ChangeDate represents Unix timestamp when domain has been modified.
 	ChangeDate int `json:"change_date"`
 
 	// UserID is the Selectel user's identifier.

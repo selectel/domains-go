@@ -45,6 +45,8 @@ const (
 	defaultExpectContinueTimeout = 1
 )
 
+const RecordsEndpoint = "records"
+
 // ServiceClient stores details that are needed to work with Selectel Domains API.
 type ServiceClient struct {
 	// HTTPClient represents an initialized HTTP client that will be used to do requests.

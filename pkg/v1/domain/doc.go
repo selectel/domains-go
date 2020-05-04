@@ -1,6 +1,6 @@
 /*
 Package domain provides the ability to interact with domains
-through the Selectel Domains API V!.
+through the Selectel Domains API V1.
 
 Example of getting a single domain by its id
 
@@ -31,7 +31,7 @@ Example of getting a list of domains
 Example of creating a new domain
 
   createOpts := &domain.CreateOpts{
-    Name:        "test-cluster-0",
+    Name:        "test-domain-0",
   }
   selectelDomain, _, err := domain.Create(ctx, serviceClient, createOpts)
   if err != nil {
