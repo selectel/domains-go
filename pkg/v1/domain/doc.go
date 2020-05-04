@@ -38,5 +38,12 @@ Example of creating a new domain
     log.Fatal(err)
   }
   fmt.Printf("%+v\n", selectelDomain)
+
+Example of domain deletion
+
+  _, err := domain.Delete(ctx, serviceClient, domainID)
+  if err != nil {
+    log.Fatal(err)
+  }
 */
 package domain
