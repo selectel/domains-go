@@ -36,7 +36,7 @@ func Get(ctx context.Context, client *v1.ServiceClient, domainID, recordID int) 
 
 // ListByDomainID returns a list of domain records by domain id.
 func ListByDomainID(ctx context.Context, client *v1.ServiceClient, domainID int) ([]*View, *v1.ResponseResult, error) {
-	url := strings.Join([]string{client.Endpoint, strconv.Itoa(domainID), v1.RecordsEndpoint}, "/")
+	url := strings.Join([]string{client.Endpoint, strconv.Itoa(domainID), v1.RecordsEndpoint, "/"}, "/")
 	responseResult, err := client.DoRequest(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, nil, err
@@ -57,7 +57,7 @@ func ListByDomainID(ctx context.Context, client *v1.ServiceClient, domainID int)
 
 // ListByDomainName returns a list of domain records by domain name.
 func ListByDomainName(ctx context.Context, client *v1.ServiceClient, domainName string) ([]*View, *v1.ResponseResult, error) {
-	url := strings.Join([]string{client.Endpoint, domainName, v1.RecordsEndpoint}, "/")
+	url := strings.Join([]string{client.Endpoint, domainName, v1.RecordsEndpoint, "/"}, "/")
 	responseResult, err := client.DoRequest(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, nil, err
