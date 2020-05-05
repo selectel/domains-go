@@ -11,6 +11,7 @@ const (
 	TypeTXT     Type = "TXT"
 	TypeCNAME   Type = "CNAME"
 	TypeNS      Type = "NS"
+	TypeSOA     Type = "SOA"
 	TypeMX      Type = "MX"
 	TypeSRV     Type = "SRV"
 	TypeUnknown Type = "UNKNOWN"
@@ -21,12 +22,6 @@ type View struct {
 	// ID is the identifier of the record.
 	ID int `json:"id"`
 
-	// CreateDate represents Unix timestamp when record has been created.
-	CreateDate int `json:"create_date,omitempty"`
-
-	// ChangeDate represents Unix timestamp when record has been modified.
-	ChangeDate int `json:"change_date,omitempty"`
-
 	// Name represents record name.
 	Name string `json:"name"`
 
@@ -36,13 +31,35 @@ type View struct {
 	// TTL represents record's time-to-live.
 	TTL int `json:"ttl,omitempty"`
 
+	// Content represents record content.
+	// Absent for SRV.
+	Content string `json:"content,omitempty"`
+
+	// ChangeDate represents Unix timestamp when record has been modified.
+	// For SOA records only.
+	ChangeDate *int `json:"change_date,omitempty"`
+
 	// Emails represents email of domain's admin.
 	// For SOA records only.
 	Email string `json:"email,omitempty"`
 
-	// Content represents record content
-	// Absent for SRV.
-	Content string `json:"content,omitempty"`
+	// Priority represents records preferences.
+	// Lower value means more preferred.
+	// For MX/SRV records only.
+	Priority *int `json:"priority,omitempty"`
+
+	// Weight represents a relative weight for records with the same priority,
+	// higher value means higher chance of getting picked.
+	// For SRV records only.
+	Weight *int `json:"weight,omitempty"`
+
+	// Port represents the TCP or UDP port on which the service is to be found.
+	// For SRV records only.
+	Port *int `json:"port,omitempty"`
+
+	// Target represents the canonical hostname of the machine providing the service.
+	// For SRV records only.
+	Target string `json:"target,omitempty"`
 }
 
 func (result *View) UnmarshalJSON(b []byte) error {
@@ -74,6 +91,8 @@ func (result *View) UnmarshalJSON(b []byte) error {
 		result.Type = TypeMX
 	case TypeSRV:
 		result.Type = TypeSRV
+	case TypeSOA:
+		result.Type = TypeSOA
 	default:
 		result.Type = TypeUnknown
 	}
