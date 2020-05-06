@@ -270,3 +270,43 @@ func TestDoErrNoContentRequest(t *testing.T) {
 			response.Err.Error())
 	}
 }
+
+func TestDoRequestInvalidResponseFromServer(t *testing.T) {
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+	testEnv.Mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		_, _ = fmt.Fprint(w, "<") // might be as a beginning of HTTP body
+
+		if r.Method != http.MethodGet {
+			t.Errorf("got %s method, want GET", r.Method)
+		}
+	})
+
+	token := testutils.Token
+	userAgent := testutils.UserAgent
+	endpoint := testEnv.Server.URL + "/"
+	client := &ServiceClient{
+		HTTPClient: &http.Client{},
+		Endpoint:   endpoint,
+		Token:      token,
+		UserAgent:  userAgent,
+	}
+
+	ctx := context.Background()
+	response, err := client.DoRequest(ctx, http.MethodGet, endpoint, nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if response.Body == nil {
+		t.Fatal("response body is empty")
+	}
+	if response.StatusCode != http.StatusServiceUnavailable {
+		t.Fatalf("got %d response status, want 503", response.StatusCode)
+	}
+
+	if response.Err.Error() != "domains-go: got invalid response from the server" {
+		t.Fatalf("got %s error message, want 'domains-go: got invalid response from the server'",
+			response.Err.Error())
+	}
+}
