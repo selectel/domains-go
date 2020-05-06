@@ -457,3 +457,154 @@ func TestListByDomainNameUnmarshallError(t *testing.T) {
 		t.Fatal("expected error from the ListByDomainName method")
 	}
 }
+
+func TestCreateRecord(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         fmt.Sprintf("/v1/%d/records/", testDomainID),
+		RawResponse: testCreateRecordResponseRaw,
+		RawRequest:  testCreateRecordOptsRaw,
+		Method:      http.MethodPost,
+		Status:      http.StatusOK,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := record.Create(ctx, testClient, testDomainID, testCreateRecordOpts)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Create method")
+	}
+	if httpResponse.StatusCode != http.StatusOK {
+		t.Fatalf("expected %d status in the HTTP response, but got %d",
+			http.StatusOK, httpResponse.StatusCode)
+	}
+	if !reflect.DeepEqual(expectedCreateResponse, actual) {
+		t.Fatalf("expected %#v, but got %#v", expectedCreateResponse, actual)
+	}
+}
+
+func TestCreateRecordHTTPError(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         fmt.Sprintf("/v1/%d/records/", testDomainID),
+		RawResponse: testErrGenericResponseRaw,
+		RawRequest:  testCreateRecordOptsRaw,
+		Method:      http.MethodPost,
+		Status:      http.StatusBadGateway,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := record.Create(ctx, testClient, testDomainID, testCreateRecordOpts)
+
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if actual != nil {
+		t.Fatal("expected no record from the Create method")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Create method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Create method")
+	}
+	if httpResponse.StatusCode != http.StatusBadGateway {
+		t.Fatalf("expected %d status in the HTTP response, but got %d",
+			http.StatusBadGateway, httpResponse.StatusCode)
+	}
+}
+
+func TestCreateRecordTimeoutError(t *testing.T) {
+	testEnv := testutils.SetupTestEnv()
+	testEnv.Server.Close()
+	defer testEnv.TearDownTestEnv()
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := record.Create(ctx, testClient, testDomainID, testCreateRecordOpts)
+
+	if actual != nil {
+		t.Fatal("expected no record from the Create method")
+	}
+	if httpResponse != nil {
+		t.Fatal("expected no HTTP response from the Create method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Create method")
+	}
+}
+
+func TestCreateRecordUnmarshallError(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         fmt.Sprintf("/v1/%d/records/", testDomainID),
+		RawResponse: testSingleRecordInvalidResponseRaw,
+		RawRequest:  testCreateRecordOptsRaw,
+		Method:      http.MethodPost,
+		Status:      http.StatusOK,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := record.Create(ctx, testClient, testDomainID, testCreateRecordOpts)
+
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if actual != nil {
+		t.Fatal("expected no record from the Create method")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Create method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Create method")
+	}
+}

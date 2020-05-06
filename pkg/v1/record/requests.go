@@ -1,7 +1,9 @@
 package record
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
@@ -80,4 +82,33 @@ func ListByDomainName(ctx context.Context, client *v1.ServiceClient, domainName 
 	}
 
 	return records, responseResult, nil
+}
+
+// Create requests a creation of a new domain record.
+func Create(ctx context.Context, client *v1.ServiceClient, domainID int, opts *CreateOpts) (*View, *v1.ResponseResult, error) {
+	requestBody, err := json.Marshal(opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	url := strings.Join([]string{
+		client.Endpoint,
+		strconv.Itoa(domainID),
+		v1.RecordsEndpoint}, "/") + "/"
+	responseResult, err := client.DoRequest(ctx, http.MethodPost, url, bytes.NewReader(requestBody))
+	if err != nil {
+		return nil, nil, err
+	}
+	if responseResult.Err != nil {
+		return nil, responseResult, responseResult.Err
+	}
+
+	// Extract record from the response body.
+	record := &View{}
+	err = responseResult.ExtractResult(record)
+	if err != nil {
+		return nil, responseResult, err
+	}
+
+	return record, responseResult, nil
 }

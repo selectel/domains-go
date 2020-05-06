@@ -184,6 +184,43 @@ var expectedListResponse = []*record.View{
 	},
 }
 
+// testCreateRecordOptsRaw represents a raw request options for Create request.
+const testCreateRecordOptsRaw = `
+{
+   "name": "example.testdomain.xyz",
+   "type": "CNAME",
+   "ttl": 60,
+   "content": "origin.example.com"
+}
+`
+
+// testCreateRecordOpts represents an unmarshalled testCreateRecordOptsRaw.
+var testCreateRecordOpts = &record.CreateOpts{
+	Name:    "example.testdomain.xyz",
+	Type:    record.TypeCNAME,
+	TTL:     60,
+	Content: "origin.example.com",
+}
+
+// testCreateRecordResponseRaw represents a raw response for Create request.
+const testCreateRecordResponseRaw = `
+{
+   "content" : "origin.example.com",
+   "type" : "CNAME",
+   "id" : 4894583,
+   "ttl" : 60,
+   "name" : "example.testdomain.xyz"
+}
+`
+
+var expectedCreateResponse = &record.View{
+	ID:      4894583,
+	Name:    "example.testdomain.xyz",
+	Type:    record.TypeCNAME,
+	TTL:     60,
+	Content: "origin.example.com",
+}
+
 // testErrGenericResponseRaw represents a raw response with an error in the generic format.
 const testErrGenericResponseRaw = `{"error":"bad gateway"}`
 
