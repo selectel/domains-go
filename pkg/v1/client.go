@@ -212,7 +212,8 @@ func (result *ResponseResult) extractErr() error {
 		err = json.Unmarshal(body, &result.ErrGeneric)
 	}
 	if err != nil {
-		return err
+		result.Err = fmt.Errorf("domains-go: got invalid response from the server")
+		return nil
 	}
 
 	result.Err = fmt.Errorf("domains-go: got the %d status code from the server: %s",
