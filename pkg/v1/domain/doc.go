@@ -31,7 +31,7 @@ Example of getting a list of domains
 Example of creating a new domain
 
   createOpts := &domain.CreateOpts{
-    Name:        "test-domain-0",
+    Name:        "testdomain.xyz",
   }
   selectelDomain, _, err := domain.Create(ctx, serviceClient, createOpts)
   if err != nil {

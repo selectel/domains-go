@@ -29,5 +29,19 @@ Example of getting a list of domain records by domain name
   for _, r := range domainRecords {
     fmt.Printf("%+v\n", r)
   }
+
+Example of creating a new domain record
+
+  createOpts := &record.CreateOpts{
+    Name:     "example.testdomain.xyz",
+    Type:     record.TypeCNAME,
+    TTL:      60,
+    Content:  "origin.example.com",
+  }
+  domainRecord, _, err := record.Create(ctx, serviceClient, domainID, createOpts)
+  if err != nil {
+    log.Fatal(err)
+  }
+  fmt.Printf("%+v\n", domainRecord)
 */
 package record
