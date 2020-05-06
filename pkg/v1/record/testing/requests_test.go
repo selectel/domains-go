@@ -530,13 +530,13 @@ func TestCreateRecordHTTPError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no record from the Get method")
+		t.Fatal("expected no record from the Create method")
 	}
 	if httpResponse == nil {
-		t.Fatal("expected an HTTP response from the Get method")
+		t.Fatal("expected an HTTP response from the Create method")
 	}
 	if err == nil {
-		t.Fatal("expected error from the Get method")
+		t.Fatal("expected error from the Create method")
 	}
 	if httpResponse.StatusCode != http.StatusBadGateway {
 		t.Fatalf("expected %d status in the HTTP response, but got %d",
@@ -560,13 +560,13 @@ func TestCreateRecordTimeoutError(t *testing.T) {
 	actual, httpResponse, err := record.Create(ctx, testClient, testDomainID, testCreateRecordOpts)
 
 	if actual != nil {
-		t.Fatal("expected no record from the Get method")
+		t.Fatal("expected no record from the Create method")
 	}
 	if httpResponse != nil {
-		t.Fatal("expected no HTTP response from the Get method")
+		t.Fatal("expected no HTTP response from the Create method")
 	}
 	if err == nil {
-		t.Fatal("expected error from the Get method")
+		t.Fatal("expected error from the Create method")
 	}
 }
 
@@ -599,12 +599,12 @@ func TestCreateRecordUnmarshallError(t *testing.T) {
 		t.Fatal("endpoint wasn't called")
 	}
 	if actual != nil {
-		t.Fatal("expected no record from the Get method")
+		t.Fatal("expected no record from the Create method")
 	}
 	if httpResponse == nil {
-		t.Fatal("expected an HTTP response from the Get method")
+		t.Fatal("expected an HTTP response from the Create method")
 	}
 	if err == nil {
-		t.Fatal("expected error from the Get method")
+		t.Fatal("expected error from the Create method")
 	}
 }
