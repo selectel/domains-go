@@ -43,5 +43,12 @@ Example of creating a new domain record
     log.Fatal(err)
   }
   fmt.Printf("%+v\n", domainRecord)
+
+Example of domain record deletion
+
+  _, err := record.Delete(ctx, serviceClient, domainID, recordID)
+  if err != nil {
+    log.Fatal(err)
+  }
 */
 package record

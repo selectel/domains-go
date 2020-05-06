@@ -112,3 +112,21 @@ func Create(ctx context.Context, client *v1.ServiceClient, domainID int, opts *C
 
 	return record, responseResult, nil
 }
+
+// Delete deletes a single domain record by its id.
+func Delete(ctx context.Context, client *v1.ServiceClient, domainID, recordID int) (*v1.ResponseResult, error) {
+	url := strings.Join([]string{
+		client.Endpoint,
+		strconv.Itoa(domainID),
+		v1.RecordsEndpoint,
+		strconv.Itoa(recordID)}, "/")
+	responseResult, err := client.DoRequest(ctx, http.MethodDelete, url, nil)
+	if err != nil {
+		return nil, err
+	}
+	if responseResult.Err != nil {
+		err = responseResult.Err
+	}
+
+	return responseResult, err
+}
