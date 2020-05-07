@@ -130,3 +130,33 @@ func Delete(ctx context.Context, client *v1.ServiceClient, domainID, recordID in
 
 	return responseResult, err
 }
+
+// Update requests domain record updating.
+func Update(ctx context.Context, client *v1.ServiceClient, domainID, recordID int, opts *UpdateOpts) (*View, *v1.ResponseResult, error) {
+	requestBody, err := json.Marshal(opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	url := strings.Join([]string{
+		client.Endpoint,
+		strconv.Itoa(domainID),
+		v1.RecordsEndpoint,
+		strconv.Itoa(recordID)}, "/")
+	responseResult, err := client.DoRequest(ctx, http.MethodPut, url, bytes.NewReader(requestBody))
+	if err != nil {
+		return nil, nil, err
+	}
+	if responseResult.Err != nil {
+		return nil, responseResult, responseResult.Err
+	}
+
+	// Extract record from the response body.
+	record := &View{}
+	err = responseResult.ExtractResult(record)
+	if err != nil {
+		return nil, responseResult, err
+	}
+
+	return record, responseResult, nil
+}

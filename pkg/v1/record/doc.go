@@ -50,5 +50,19 @@ Example of domain record deletion
   if err != nil {
     log.Fatal(err)
   }
+
+Example of domain record updating
+
+  updateOpts := &record.UpdateOpts{
+    Name:     "example.testdomain.xyz",
+    Type:     record.TypeCNAME,
+    TTL:      120,
+    Content:  "origin.example.com",
+  }
+  updatedRecord, _, err := record.Update(ctx, serviceClient, domainID, recordID, updateOpts)
+  if err != nil {
+    log.Fatal(err)
+  }
+  fmt.Printf("%+v\n", updatedRecord)
 */
 package record
