@@ -221,6 +221,43 @@ var expectedCreateResponse = &record.View{
 	Content: "origin.example.com",
 }
 
+// testUpdateRecordOptsRaw represents a raw request options for Update request.
+const testUpdateRecordOptsRaw = `
+{
+   "name": "example.testdomain.xyz",
+   "type": "CNAME",
+   "ttl": 100,
+   "content": "origin2.example.com"
+}
+`
+
+// testUpdateRecordOpts represents an unmarshalled testUpdateRecordOptsRaw.
+var testUpdateRecordOpts = &record.UpdateOpts{
+	Name:    "example.testdomain.xyz",
+	Type:    record.TypeCNAME,
+	TTL:     100,
+	Content: "origin2.example.com",
+}
+
+// testUpdateRecordResponseRaw represents a raw response for Update request.
+const testUpdateRecordResponseRaw = `
+{
+   "content" : "origin2.example.com",
+   "type" : "CNAME",
+   "id" : 4894583,
+   "ttl" : 100,
+   "name" : "example.testdomain.xyz"
+}
+`
+
+var expectedUpdateResponse = &record.View{
+	ID:      4894583,
+	Name:    "example.testdomain.xyz",
+	Type:    record.TypeCNAME,
+	TTL:     100,
+	Content: "origin2.example.com",
+}
+
 // testErrGenericResponseRaw represents a raw response with an error in the generic format.
 const testErrGenericResponseRaw = `{"error":"bad gateway"}`
 

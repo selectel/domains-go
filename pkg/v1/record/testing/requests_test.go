@@ -708,3 +708,155 @@ func TestDeleteRecordTimeoutError(t *testing.T) {
 		t.Fatal("expected error from the Delete method")
 	}
 }
+
+func TestUpdateRecord(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         fmt.Sprintf("/v1/%d/records/%d", testDomainID, testRecordID),
+		RawResponse: testUpdateRecordResponseRaw,
+		RawRequest:  testUpdateRecordOptsRaw,
+		Method:      http.MethodPut,
+		Status:      http.StatusOK,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := record.Update(ctx, testClient, testDomainID, testRecordID, testUpdateRecordOpts)
+
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Update method")
+	}
+	if httpResponse.StatusCode != http.StatusOK {
+		t.Fatalf("expected %d status in the HTTP response, but got %d",
+			http.StatusOK, httpResponse.StatusCode)
+	}
+	if !reflect.DeepEqual(expectedUpdateResponse, actual) {
+		t.Fatalf("expected %#v, but got %#v", expectedUpdateResponse, actual)
+	}
+}
+
+func TestUpdateRecordHTTPError(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         fmt.Sprintf("/v1/%d/records/%d", testDomainID, testRecordID),
+		RawResponse: testErrGenericResponseRaw,
+		RawRequest:  testUpdateRecordOptsRaw,
+		Method:      http.MethodPut,
+		Status:      http.StatusBadGateway,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := record.Update(ctx, testClient, testDomainID, testRecordID, testUpdateRecordOpts)
+
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if actual != nil {
+		t.Fatal("expected no record from the Get method")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Get method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Get method")
+	}
+	if httpResponse.StatusCode != http.StatusBadGateway {
+		t.Fatalf("expected %d status in the HTTP response, but got %d",
+			http.StatusBadGateway, httpResponse.StatusCode)
+	}
+}
+
+func TestUpdateRecordTimeoutError(t *testing.T) {
+	testEnv := testutils.SetupTestEnv()
+	testEnv.Server.Close()
+	defer testEnv.TearDownTestEnv()
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := record.Update(ctx, testClient, testDomainID, testRecordID, testUpdateRecordOpts)
+
+	if actual != nil {
+		t.Fatal("expected no record from the Update method")
+	}
+
+	if httpResponse != nil {
+		t.Fatal("expected no HTTP response from the Update method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Update method")
+	}
+}
+
+func TestUpdateRecordUnmarshallError(t *testing.T) {
+	endpointCalled := false
+	testEnv := testutils.SetupTestEnv()
+	defer testEnv.TearDownTestEnv()
+
+	testutils.HandleReqWithBody(t, &testutils.HandleReqOpts{
+		Mux:         testEnv.Mux,
+		URL:         fmt.Sprintf("/v1/%d/records/%d", testDomainID, testRecordID),
+		RawResponse: testSingleRecordInvalidResponseRaw,
+		RawRequest:  testUpdateRecordOptsRaw,
+		Method:      http.MethodPut,
+		Status:      http.StatusOK,
+		CallFlag:    &endpointCalled,
+	})
+
+	ctx := context.Background()
+	testClient := &v1.ServiceClient{
+		HTTPClient: &http.Client{},
+		Token:      testutils.Token,
+		Endpoint:   testEnv.Server.URL + "/v1",
+		UserAgent:  testutils.UserAgent,
+	}
+
+	actual, httpResponse, err := record.Update(ctx, testClient, testDomainID, testRecordID, testUpdateRecordOpts)
+
+	if !endpointCalled {
+		t.Fatal("endpoint wasn't called")
+	}
+	if actual != nil {
+		t.Fatal("expected no record from the Update method")
+	}
+	if httpResponse == nil {
+		t.Fatal("expected an HTTP response from the Update method")
+	}
+	if err == nil {
+		t.Fatal("expected error from the Update method")
+	}
+}
