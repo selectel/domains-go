@@ -67,6 +67,30 @@ func TestNewDomainsClientV1WithCustomHTTP(t *testing.T) {
 	}
 }
 
+func TestNewDomainsClientV1WithDefaultEndpoint(t *testing.T) {
+	token := testutils.Token
+	expected := &ServiceClient{
+		Token:     token,
+		Endpoint:  defaultEndpoint,
+		UserAgent: userAgent,
+	}
+
+	actual := NewDomainsClientV1WithDefaultEndpoint(token)
+
+	if expected.Token != actual.Token {
+		t.Errorf("expected Endpoint %s, but got %s", expected.Endpoint, actual.Endpoint)
+	}
+	if expected.Endpoint != actual.Endpoint {
+		t.Errorf("expected Token %s, but got %s", expected.Token, actual.Token)
+	}
+	if expected.UserAgent != actual.UserAgent {
+		t.Errorf("expected UserAgent %s, but got %s", expected.UserAgent, actual.UserAgent)
+	}
+	if actual.HTTPClient == nil {
+		t.Errorf("expected initialized HTTPClient but it's nil")
+	}
+}
+
 func TestDoGetRequest(t *testing.T) {
 	testEnv := testutils.SetupTestEnv()
 	defer testEnv.TearDownTestEnv()
