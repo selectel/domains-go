@@ -329,8 +329,8 @@ func TestDoRequestInvalidResponseFromServer(t *testing.T) {
 		t.Fatalf("got %d response status, want 503", response.StatusCode)
 	}
 
-	if response.Err.Error() != "domains-go: got invalid response from the server" {
-		t.Fatalf("got %s error message, want 'domains-go: got invalid response from the server'",
+	if response.Err.Error() != "domains-go: got invalid response from the server, status code 503" {
+		t.Fatalf("got %s error message, want 'domains-go: got invalid response from the server, status code 503'",
 			response.Err.Error())
 	}
 }
