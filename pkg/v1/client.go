@@ -16,7 +16,7 @@ const (
 	appName = "domains-go"
 
 	// appVersion is a version of the application.
-	appVersion = "0.2.0"
+	appVersion = "0.3.0"
 
 	// userAgent contains a basic user agent that will be used in queries.
 	userAgent = appName + "/" + appVersion
