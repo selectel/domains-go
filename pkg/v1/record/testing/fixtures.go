@@ -107,6 +107,31 @@ const testListResponseRaw = `
       "port" : 5222,
       "type" : "SRV",
       "priority" : 20
+   },
+   {
+      "name" : "caa.testdomain.xyz",
+      "ttl" : 86400,
+      "id" : 4892462,
+      "type" : "CAA",
+      "tag" : "issue",
+      "flag" : 1,
+      "value" : "letsencrypt.com"
+   },
+   {
+      "name" : "sshfp.testdomain.xyz",
+      "ttl" : 86400,
+      "id" : 4892472,
+      "type" : "SSHFP",
+      "algorithm" : 1,
+      "fingerprint_type" : 1,
+      "fingerprint" : "001a2B3CFF"
+   },
+   {
+      "name" : "testdomain.zyx",
+      "ttl" : 86400,
+      "id" : 4892482,
+      "type" : "ALIAS",
+      "content" : "testdomain.xyz"
    }
 ]
 `
@@ -180,6 +205,31 @@ var expectedListResponse = []*record.View{
 		Weight:   testutils.IntPtr(0),
 		Port:     testutils.IntPtr(5222),
 		Target:   "xmpp.example.com",
+		TTL:      86400,
+	},
+   {
+		ID:       4892462,
+		Name:     "caa.testdomain.xyz",
+		Type:     record.TypeCAA,
+		Tag:      "issue",
+		Flag:     testutils.IntPtr(1),
+		Value:    "letsencrypt.com",
+		TTL:      86400,
+	},
+   {
+		ID:                  4892472,
+		Name:                "sshfp.testdomain.xyz",
+		Type:                record.TypeSSHFP,
+		Algorithm:           testutils.IntPtr(1),
+		FingerprintType:     testutils.IntPtr(1),
+		Fingerprint:         "001a2B3CFF",
+		TTL:                 86400,
+	},
+   {
+		ID:       4892482,
+		Name:     "testdomain.zyx",
+		Type:     record.TypeALIAS,
+		Content:  "testdomain.xyz",
 		TTL:      86400,
 	},
 }
