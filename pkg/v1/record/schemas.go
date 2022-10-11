@@ -14,6 +14,9 @@ const (
 	TypeSOA     Type = "SOA"
 	TypeMX      Type = "MX"
 	TypeSRV     Type = "SRV"
+	TypeCAA     Type = "CAA"
+	TypeSSHFP   Type = "SSHFP"
+	TypeALIAS   Type = "ALIAS"
 	TypeUnknown Type = "UNKNOWN"
 )
 
@@ -60,6 +63,30 @@ type View struct {
 	// Target represents the canonical hostname of the machine providing the service.
 	// For SRV records only.
 	Target string `json:"target,omitempty"`
+
+	// Tag represents the identifier of the property represented by the record.
+	// For CAA records only.
+	Tag string `json:"tag,omitempty"`
+
+	// Flag represents the critical flag, that has a specific meaning per RFC.
+	// For CAA records only.
+	Flag *int `json:"flag,omitempty"`
+
+	// The value associated with the tag.
+	// For CAA records only.
+	Value string `json:"value,omitempty"`
+
+	// Algorithm.
+	// For SSHFP records only.
+	Algorithm *int `json:"algorithm,omitempty"`
+
+	// Algorithm used to hash the public key
+	// For SSHFP records only.
+	FingerprintType *int `json:"fingerprint_type,omitempty"`
+
+	// Hexadecimal representation of the hash result, as text.
+	// For SSHFP records only.
+	Fingerprint string `json:"fingerprint,omitempty"`
 }
 
 func (result *View) UnmarshalJSON(b []byte) error {
@@ -93,6 +120,12 @@ func (result *View) UnmarshalJSON(b []byte) error {
 		result.Type = TypeSRV
 	case TypeSOA:
 		result.Type = TypeSOA
+	case TypeCAA:
+		result.Type = TypeCAA
+	case TypeALIAS:
+		result.Type = TypeALIAS
+	case TypeSSHFP:
+		result.Type = TypeSSHFP
 	default:
 		result.Type = TypeUnknown
 	}
