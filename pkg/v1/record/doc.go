@@ -64,5 +64,39 @@ Example of domain record updating
     log.Fatal(err)
   }
   fmt.Printf("%+v\n", updatedRecord)
+
+Examples of option struct for different types of records
+
+ALIAS
+
+  createOpts := &record.CreateOpts{
+    Name:     "sub.example.com",
+    Type:     record.TypeALIAS,
+    TTL:      60,
+    Content:  "example.com",
+  }
+  
+CAA
+
+  createOpts := &record.CreateOpts{
+    Name:     "example.com",
+    Type:     record.TypeCAA,
+    TTL:      60,
+    Tag:  "issue",
+    Flag: 32,
+    Value: "letsencrypt.org",
+  }
+
+SSHFP
+
+  createOpts := &record.CreateOpts{
+    Name:     "example.com",
+    Type:     record.TypeSSHFP,
+    TTL:      60,
+    Algrotihm:  1,
+    FingerprintType: 2,
+    Fingerprint: "RtvgDtzHTaRB5d2Yy5c1",
+  }
+
 */
 package record
