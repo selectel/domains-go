@@ -37,7 +37,7 @@ type CreateOpts struct {
 	// For SRV records only.
 	Target string `json:"target,omitempty"`
 
-	// Tag rrepresents the identifier of the property represented by the record.
+	// Tag represents the identifier of the property represented by the record.
 	// For CAA records only.
 	Tag string `json:"tag,omitempty"`
 
@@ -99,7 +99,7 @@ type UpdateOpts struct {
 	// For SRV records only.
 	Target string `json:"target,omitempty"`
 
-	// Tag rrepresents the identifier of the property represented by the record.
+	// Tag represents the identifier of the property represented by the record.
 	// For CAA records only.
 	Tag string `json:"tag,omitempty"`
 
