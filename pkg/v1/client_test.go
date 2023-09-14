@@ -334,3 +334,19 @@ func TestDoRequestInvalidResponseFromServer(t *testing.T) {
 			response.Err.Error())
 	}
 }
+
+func TestClientWithOSToken(t *testing.T) {
+	token := testutils.Token
+	client := NewDomainsClientV1(token, "http://example.org")
+	OSClient := client.WithOSToken()
+
+	if client == OSClient {
+		t.Fatal(".WithOSToken() should create copy and point to different instance")
+	}
+	if client.isOpenstackToken != false {
+		t.Fatal("initial client should have value of .isOpenstackToken = false")
+	}
+	if OSClient.isOpenstackToken != true {
+		t.Fatal("OSClient should have value of .isOpenstackToken = true")
+	}
+}

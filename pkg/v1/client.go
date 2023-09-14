@@ -16,7 +16,7 @@ const (
 	appName = "domains-go"
 
 	// appVersion is a version of the application.
-	appVersion = "0.4.0"
+	appVersion = "0.5.0"
 
 	// userAgent contains a basic user agent that will be used in queries.
 	userAgent = appName + "/" + appVersion
@@ -63,6 +63,9 @@ type ServiceClient struct {
 
 	// UserAgent contains user agent that will be used in all requests.
 	UserAgent string
+
+	// isOpenstackToken defines if passed token should be treated as OpenStack token.
+	isOpenstackToken bool
 }
 
 // NewDomainsClientV1 initializes a new client for the Domains API V1.
@@ -134,7 +137,12 @@ func (client *ServiceClient) DoRequest(ctx context.Context, method, path string,
 	}
 
 	request.Header.Set("User-Agent", client.UserAgent)
-	request.Header.Set("X-Token", client.Token)
+	if !client.isOpenstackToken {
+		request.Header.Set("X-Token", client.Token)
+	} else {
+		request.Header.Set("X-Auth-Token", client.Token)
+	}
+
 	if body != nil {
 		request.Header.Set("Content-Type", "application/json")
 	}
@@ -159,6 +167,14 @@ func (client *ServiceClient) DoRequest(ctx context.Context, method, path string,
 	}
 
 	return responseResult, nil
+}
+
+// WithOSToken return copy of original client where .Token is written to .OpenstackToken and
+// .Token set to empty string.
+func (client *ServiceClient) WithOSToken() *ServiceClient {
+	clientCopy := *client
+	clientCopy.isOpenstackToken = true
+	return &clientCopy
 }
 
 // ResponseResult represents a result of an HTTP request.
