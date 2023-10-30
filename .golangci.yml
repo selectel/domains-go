@@ -9,3 +9,27 @@ linters:
     - lll
     - wsl
     - gomnd
+    - depguard
+    - testpackage
+    - exhaustivestruct
+    - paralleltest
+    # deprecated linters
+    - maligned
+    - interfacer
+    - ifshort
+    - golint
+    - scopelint
+    - structcheck
+    - deadcode
+    - varcheck
+    - nosnakecase
+
+
+
+linters-settings:
+  tagliatelle:
+      case:
+        use-field-name: true
+        rules:
+          json: snake
+          yaml: snake
