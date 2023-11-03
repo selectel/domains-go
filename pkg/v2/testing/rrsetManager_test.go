@@ -16,6 +16,7 @@ type (
 	}
 )
 
+//nolint:paralleltest
 func TestRRSetManager(t *testing.T) {
 	suite.Run(t, new(RRSetManagerSuite))
 }
@@ -96,6 +97,7 @@ func (s *RRSetManagerSuite) TestCreateRRSet_ok() {
 		fmt.Sprintf("%s%s", testAPIURL, path),
 		httpmock.NewStringResponder(http.StatusOK, mockCreateRRSetResponse()),
 	)
+
 	//nolint: exhaustruct
 	newRRSet := &v2.RRSet{
 		Name: "example.com",
@@ -132,6 +134,7 @@ func (s *RRSetManagerSuite) TestUpdateRRSet_ok() {
 		fmt.Sprintf("%s%s", testAPIURL, path),
 		httpmock.NewBytesResponder(http.StatusNoContent, []byte{}),
 	)
+
 	//nolint: exhaustruct
 	changeForm := &v2.RRSet{
 		TTL: testTTL,

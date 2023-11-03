@@ -58,17 +58,6 @@ func (c *Client) GetZone(ctx context.Context, zoneID string, _ *map[string]strin
 }
 
 // ListZones returns a list of zones by options.
-// non necessarily options:
-//  1. limit (integer). Default: 1000.
-//  2. offset (integer). Default: 0.
-//  3. filter (string).
-//  4. sort_by ([]string). Available values:
-//     - name.ascend
-//     - name.descend
-//     - created_at.ascend
-//     - created_at.descend
-//     - updated_at.ascend
-//     - updated_at.descend
 func (c *Client) ListZones(ctx context.Context, options *map[string]string) (Listable[Zone], error) {
 	r, e := c.prepareRequest(
 		ctx, http.MethodGet, rootPath, nil, options, nil,

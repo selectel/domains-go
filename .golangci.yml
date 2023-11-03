@@ -8,11 +8,7 @@ linters:
     - gosec
     - lll
     - wsl
-    - gomnd
-    - depguard
     - testpackage
-    - exhaustivestruct
-    - paralleltest
     # deprecated linters
     - maligned
     - interfacer
@@ -23,13 +19,27 @@ linters:
     - deadcode
     - varcheck
     - nosnakecase
+    - exhaustivestruct
 
 
 
 linters-settings:
   tagliatelle:
-      case:
-        use-field-name: true
-        rules:
-          json: snake
-          yaml: snake
+    case:
+      use-field-name: true
+      rules:
+        json: snake
+        yaml: snake
+  depguard:
+    rules:
+      main:
+        allow:
+          - "$gostd"
+          - "github.com/selectel/domains-go/pkg/v2"
+          - "github.com/jarcoal/httpmock"
+          - "github.com/stretchr/testify/assert"
+          - "github.com/stretchr/testify/require"
+          - "github.com/stretchr/testify/suite"
+        deny:
+          - pkg: io/ioutil
+            desc: The io/ioutil package has been deprecated, see https://go.dev/doc/go1.16#ioutil

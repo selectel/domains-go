@@ -126,18 +126,6 @@ func (c *Client) GetRRSet(ctx context.Context, zoneID, rrsetID string) (*RRSet, 
 }
 
 // ListRRSets returns a list of rrsets by zoneID and options.
-// non necessarily options:
-//  1. limit (integer). Default: 1000.
-//  2. offset (integer). Default: 0.
-//  3. sort_by ([]string). Available values:
-//     - type.ascend
-//     - type.descend
-//     - name.ascend
-//     - name.descend
-//  4. rrset_types ([]string).
-//  5. name (string).
-//  6. search (string).
-//  7. managed_by (string).
 func (c *Client) ListRRSets(ctx context.Context, zoneID string, options *map[string]string) (Listable[RRSet], error) {
 	r, e := c.prepareRequest(
 		ctx, http.MethodGet, fmt.Sprintf(rrsetPath, zoneID), nil, options, nil,

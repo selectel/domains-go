@@ -16,6 +16,7 @@ type (
 	}
 )
 
+//nolint:paralleltest
 func TestZoneManager(t *testing.T) {
 	suite.Run(t, new(ZoneManageSuite))
 }
@@ -29,11 +30,14 @@ func (s *ZoneManageSuite) TearDownTest() {
 }
 
 func (s *ZoneManageSuite) TestCreateZone_ok() {
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
 	httpmock.RegisterResponder(
 		http.MethodPost,
 		fmt.Sprintf("%s%s", testAPIURL, rootPath),
 		httpmock.NewStringResponder(http.StatusOK, mockGetZoneResponse()),
 	)
+
 	//nolint: exhaustruct
 	newZone := &v2.Zone{
 		Name: testDomainName,
@@ -49,6 +53,8 @@ func (s *ZoneManageSuite) TestCreateZone_ok() {
 }
 
 func (s *ZoneManageSuite) TestGetZone_ok() {
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
 	path := fmt.Sprintf(zonePath, testUUID)
 	httpmock.RegisterResponder(
 		http.MethodGet,

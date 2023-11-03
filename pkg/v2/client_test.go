@@ -21,6 +21,7 @@ var (
 )
 
 func TestProcessRequest_FailedRequest(t *testing.T) {
+	t.Parallel()
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 	ctx := context.Background()
@@ -42,6 +43,7 @@ func TestProcessRequest_FailedRequest(t *testing.T) {
 }
 
 func TestWithHeaders(t *testing.T) {
+	t.Parallel()
 	// Check initial headers before method call
 	assert.Equal(t, http.Header{}, testClient.defaultHeaders)
 
@@ -56,6 +58,7 @@ func TestWithHeaders(t *testing.T) {
 }
 
 func TestParamsWithCommas(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 
 	type testCase struct {
