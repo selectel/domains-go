@@ -17,7 +17,7 @@ const (
 )
 
 const (
-	rootPath          = "/zones/"
+	rootPath          = "/zones"
 	zonePath          = "/zones/%v"
 	rrsetPath         = "/zones/%v/rrset"
 	singleRRSetPath   = "/zones/%v/rrset/%v"
@@ -41,6 +41,7 @@ func mockGetZoneResponse() string {
 				"updated_at": "2023-03-09T18:47:25Z",
 				"last_check_status": false,
 				"delegation_checked_at": null,
+				"disabled": false,
 				"last_delegated_at": null
 			}
 			`,

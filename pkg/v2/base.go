@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	rootPath          = "/zones/"
+	rootPath          = "/zones"
 	zonePath          = "/zones/%v"
 	rrsetPath         = "/zones/%v/rrset"
 	singleRRSetPath   = "/zones/%v/rrset/%v"
