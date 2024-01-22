@@ -12,11 +12,21 @@ var (
 
 type (
 	BadResponseError struct {
-		ErrorMsg string `json:"error,omitempty"` //nolint: tagliatelle
-		Code     int    `json:"code"`
+		ErrorMsg    string `json:"error,omitempty"` //nolint: tagliatelle
+		Description string `json:"description,omitempty"`
+		Location    string `json:"location,omitempty"`
+		Code        int    `json:"code"`
 	}
 )
 
 func (e BadResponseError) Error() string {
-	return fmt.Sprintf("error response: %v", e.ErrorMsg)
+	err := fmt.Sprintf("error response: %v.", e.ErrorMsg)
+	if e.Description != "" {
+		err += fmt.Sprintf(" Description: %v.", e.Description)
+	}
+	if e.Location != "" {
+		err += fmt.Sprintf(" Location: %v.", e.Location)
+	}
+
+	return err
 }

@@ -102,3 +102,22 @@ func mockListRRSetResponse(count int) string {
 func mockCreateRRSetResponse() string {
 	return mockGetRRSetResponse()
 }
+
+func mockCreateZoneConflictResponse() string {
+	return `
+	{
+		"error": "bad_request",
+		"description": "Conflict"
+	  }
+	`
+}
+
+func mockCreateZoneFieldRequiredResponse() string {
+	return `
+	{
+		"error": "bad_request",
+		"description": "field required",
+		"location": "body.name"
+	}
+	`
+}
