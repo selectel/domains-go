@@ -7,11 +7,10 @@ import (
 )
 
 const (
-	rootPath          = "/zones"
-	zonePath          = "/zones/%v"
-	rrsetPath         = "/zones/%v/rrset"
-	singleRRSetPath   = "/zones/%v/rrset/%v"
-	rrsetManageByPath = "/zones/%v/rrset/%v/managed_by"
+	rootPath        = "/zones"
+	zonePath        = "/zones/%v"
+	rrsetPath       = "/zones/%v/rrset"
+	singleRRSetPath = "/zones/%v/rrset/%v"
 )
 
 type (
