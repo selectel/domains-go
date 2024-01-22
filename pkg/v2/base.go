@@ -36,8 +36,6 @@ type (
 		ListRRSets(ctx context.Context, zoneID string, options *map[string]string) (Listable[S], error)
 		UpdateRRSet(ctx context.Context, zoneID, rrsetID string, rrset Updatable) error
 		DeleteRRSet(ctx context.Context, zoneID, rrsetID string) error
-		SetRRSetManagedBy(ctx context.Context, zoneID, rrsetID, managedBy string) error
-		ResetRRSetManagedBy(ctx context.Context, zoneID, rrsetID string) error
 	}
 
 	Listable[T any] interface {

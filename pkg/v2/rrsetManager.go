@@ -147,28 +147,3 @@ func (c *Client) UpdateRRSet(ctx context.Context, zoneID, rrsetID string, rrset 
 
 	return err
 }
-
-// SetRRSetManagedBy request to update the manager.
-func (c *Client) SetRRSetManagedBy(ctx context.Context, zoneID, rrsetID, managedBy string) error {
-	form := rrsetManagedByForm{ManagedBy: managedBy}
-	body, err := json.Marshal(form)
-	if err != nil {
-		return fmt.Errorf("set managed by: %w", err)
-	}
-	r, e := c.prepareRequest(
-		ctx, http.MethodPost, fmt.Sprintf(rrsetManageByPath, zoneID, rrsetID), bytes.NewReader(body), nil, nil,
-	)
-	_, err = processRequest[rrsetManagedByForm](c.httpClient, r, e)
-
-	return err
-}
-
-// ResetRRSetManagedBy request to reset the manager.
-func (c *Client) ResetRRSetManagedBy(ctx context.Context, zoneID, rrsetID string) error {
-	r, e := c.prepareRequest(
-		ctx, http.MethodDelete, fmt.Sprintf(rrsetManageByPath, zoneID, rrsetID), nil, nil, nil,
-	)
-	_, err := processRequest[rrsetManagedByForm](c.httpClient, r, e)
-
-	return err
-}

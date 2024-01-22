@@ -66,30 +66,6 @@ func (s *RRSetManagerSuite) TestListRRSets_ok() {
 	s.Equal(0, rrsetList.GetNextOffset())
 }
 
-func (s *RRSetManagerSuite) TestSetRRSetManagedBy_ok() {
-	path := fmt.Sprintf(rrsetManageByPath, testUUID, testUUID)
-	httpmock.RegisterResponder(
-		http.MethodPost,
-		fmt.Sprintf("%s%s", testAPIURL, path),
-		httpmock.NewBytesResponder(http.StatusNoContent, []byte{}),
-	)
-
-	err := testClient.SetRRSetManagedBy(testCtx, testUUID, testUUID, testUUID)
-	s.Nil(err)
-}
-
-func (s *RRSetManagerSuite) TestResetRRSetManagedBy_ok() {
-	path := fmt.Sprintf(rrsetManageByPath, testUUID, testUUID)
-	httpmock.RegisterResponder(
-		http.MethodDelete,
-		fmt.Sprintf("%s%s", testAPIURL, path),
-		httpmock.NewBytesResponder(http.StatusNoContent, []byte{}),
-	)
-
-	err := testClient.ResetRRSetManagedBy(testCtx, testUUID, testUUID)
-	s.Nil(err)
-}
-
 func (s *RRSetManagerSuite) TestCreateRRSet_ok() {
 	path := fmt.Sprintf(rrsetPath, testUUID)
 	httpmock.RegisterResponder(
