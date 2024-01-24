@@ -30,25 +30,25 @@ func (s *RRSetManagerSuite) TearDownTest() {
 }
 
 func (s *RRSetManagerSuite) TestGetRRSet_ok() {
-	path := fmt.Sprintf(singleRRSetPath, testUUID, testUUID)
+	path := fmt.Sprintf(singleRRSetPath, testID, testID)
 	httpmock.RegisterResponder(
 		http.MethodGet,
 		fmt.Sprintf("%s%s", testAPIURL, path),
 		httpmock.NewStringResponder(http.StatusOK, mockGetRRSetResponse()),
 	)
 
-	rrset, err := testClient.GetRRSet(testCtx, testUUID, testUUID)
+	rrset, err := testClient.GetRRSet(testCtx, testID, testID)
 
 	s.Nil(err)
 	//nolint: exhaustruct
 	s.IsType(&v2.RRSet{}, rrset)
 	s.NotNil(rrset.Records)
-	s.Equal(testUUID, rrset.UUID)
+	s.Equal(testID, rrset.ID)
 	s.Len(rrset.Records, 2)
 }
 
 func (s *RRSetManagerSuite) TestListRRSets_ok() {
-	path := fmt.Sprintf(rrsetPath, testUUID)
+	path := fmt.Sprintf(rrsetPath, testID)
 	testCount := 10
 	httpmock.RegisterResponder(
 		http.MethodGet,
@@ -56,7 +56,7 @@ func (s *RRSetManagerSuite) TestListRRSets_ok() {
 		httpmock.NewStringResponder(http.StatusOK, mockListRRSetResponse(testCount)),
 	)
 
-	rrsetList, err := testClient.ListRRSets(testCtx, testUUID, nil)
+	rrsetList, err := testClient.ListRRSets(testCtx, testID, nil)
 
 	s.Nil(err)
 	//nolint: exhaustruct
@@ -67,7 +67,7 @@ func (s *RRSetManagerSuite) TestListRRSets_ok() {
 }
 
 func (s *RRSetManagerSuite) TestCreateRRSet_ok() {
-	path := fmt.Sprintf(rrsetPath, testUUID)
+	path := fmt.Sprintf(rrsetPath, testID)
 	httpmock.RegisterResponder(
 		http.MethodPost,
 		fmt.Sprintf("%s%s", testAPIURL, path),
@@ -83,28 +83,28 @@ func (s *RRSetManagerSuite) TestCreateRRSet_ok() {
 			{Content: "", Disabled: false},
 		},
 	}
-	rrset, err := testClient.CreateRRSet(testCtx, testUUID, newRRSet)
+	rrset, err := testClient.CreateRRSet(testCtx, testID, newRRSet)
 
 	s.Nil(err)
 	//nolint: exhaustruct
 	s.IsType(&v2.RRSet{}, rrset)
-	s.Equal(testUUID, rrset.UUID)
+	s.Equal(testID, rrset.ID)
 }
 
 func (s *RRSetManagerSuite) TestDeleteRRSet_ok() {
-	path := fmt.Sprintf(singleRRSetPath, testUUID, testUUID)
+	path := fmt.Sprintf(singleRRSetPath, testID, testID)
 	httpmock.RegisterResponder(
 		http.MethodDelete,
 		fmt.Sprintf("%s%s", testAPIURL, path),
 		httpmock.NewBytesResponder(http.StatusNoContent, []byte{}),
 	)
 
-	err := testClient.DeleteRRSet(testCtx, testUUID, testUUID)
+	err := testClient.DeleteRRSet(testCtx, testID, testID)
 	s.Nil(err)
 }
 
 func (s *RRSetManagerSuite) TestUpdateRRSet_ok() {
-	path := fmt.Sprintf(singleRRSetPath, testUUID, testUUID)
+	path := fmt.Sprintf(singleRRSetPath, testID, testID)
 	httpmock.RegisterResponder(
 		http.MethodPatch,
 		fmt.Sprintf("%s%s", testAPIURL, path),
@@ -118,6 +118,6 @@ func (s *RRSetManagerSuite) TestUpdateRRSet_ok() {
 			{Content: "content", Disabled: false},
 		},
 	}
-	err := testClient.UpdateRRSet(testCtx, testUUID, testUUID, changeForm)
+	err := testClient.UpdateRRSet(testCtx, testID, testID, changeForm)
 	s.Nil(err)
 }

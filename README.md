@@ -111,7 +111,7 @@ func main() {
 	}
 
 	// Create rrset type TXT
-	selectelCreatedRrset, err := client.CreateRRSet(context.Background(), selectelCreatedZone.UUID, createRrsetOpts)
+	selectelCreatedRrset, err := client.CreateRRSet(context.Background(), selectelCreatedZone.ID, createRrsetOpts)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -119,7 +119,6 @@ func main() {
 	fmt.Printf("Created rrset: %+v\n", selectelCreatedRrset)
 }
 ```
-
 
 ## Current version vs Legacy version
 

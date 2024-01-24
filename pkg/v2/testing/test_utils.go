@@ -10,7 +10,7 @@ import (
 
 const (
 	testDomainName = "bonnie-test.com"
-	testUUID       = "a1b1a1e3-6cc2-4578-8ec7-5c4b2fcba3f7"
+	testID         = "a1b1a1e3-6cc2-4578-8ec7-5c4b2fcba3f7"
 	testAPIURL     = "http://api.test.bonnie.com"
 	testIPv4       = "10.20.30.40"
 	testTTL        = 60
@@ -33,7 +33,7 @@ func mockGetZoneResponse() string {
 	return fmt.Sprintf(
 		`
 			{
-				"uuid": "%v",
+				"id": "%v",
 				"project_id": "%v",
 				"name": "%v",
 				"created_at": "2023-03-09T18:47:25Z",
@@ -44,8 +44,8 @@ func mockGetZoneResponse() string {
 				"last_delegated_at": null
 			}
 			`,
-		testUUID,
-		testUUID,
+		testID,
+		testID,
 		testDomainName,
 	)
 }
@@ -66,8 +66,8 @@ func mockListZonesResponse(count int) string {
 func mockGetRRSetResponse() string {
 	return fmt.Sprintf(
 		`{
-					"uuid": "%v",
-					"zone": "%v",
+					"id": "%v",
+					"zone_id": "%v",
 					"name": "go-test-record.%v",
 					"type": "%v",
 					"ttl": %v,
@@ -75,8 +75,8 @@ func mockGetRRSetResponse() string {
 					"managed_by": null,
 					"records": [{"content":"%v", "disabled": true},{"content":"%v", "disabled":false}]
 				}`,
-		testUUID,
-		testUUID,
+		testID,
+		testID,
 		testDomainName,
 		v2.A,
 		testTTL,

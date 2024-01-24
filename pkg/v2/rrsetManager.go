@@ -30,8 +30,8 @@ type (
 
 	// RRSet is list of records grouped by their name and type.
 	RRSet struct {
-		UUID      string       `json:"uuid"`
-		ZoneUUID  string       `json:"zone"` //nolint: tagliatelle
+		ID        string       `json:"id"`
+		ZoneID    string       `json:"zone_id"`
 		Name      string       `json:"name"`
 		TTL       int          `json:"ttl"`
 		Type      RecordType   `json:"type"`
