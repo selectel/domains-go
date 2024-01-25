@@ -117,7 +117,7 @@ func (c *Client) UpdateZoneState(ctx context.Context, zoneID string, disabled bo
 	}
 	form := bytes.NewReader(updateState)
 	r, e := c.prepareRequest(
-		ctx, http.MethodPatch, fmt.Sprintf(zonePath, zoneID), form, nil, nil,
+		ctx, http.MethodPatch, fmt.Sprintf(zonePathUpdateState, zoneID), form, nil, nil,
 	)
 	_, err = processRequest[Zone](c.httpClient, r, e)
 
