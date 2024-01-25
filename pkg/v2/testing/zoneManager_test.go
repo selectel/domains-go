@@ -134,3 +134,16 @@ func (s *ZoneManageSuite) TestCreateZone_err_bad_request_with_description_and_lo
 	expectedError := "error response: bad_request. Description: field required. Location: body.name."
 	s.EqualValues(err.Error(), expectedError)
 }
+
+func (s *ZoneManageSuite) TestUpdateZoneState_state_updated() {
+	path := fmt.Sprintf(zonePathUpdateState, testID)
+	httpmock.RegisterResponder(
+		http.MethodPatch,
+		fmt.Sprintf("%s%s", testAPIURL, path),
+		httpmock.NewBytesResponder(http.StatusNoContent, []byte{}),
+	)
+
+	err := testClient.UpdateZoneState(testCtx, testID, true)
+
+	s.Nil(err)
+}
