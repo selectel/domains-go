@@ -46,26 +46,26 @@ func (s *ZoneManageSuite) TestCreateZone_ok() {
 	//nolint: exhaustruct
 	s.IsType(&v2.Zone{}, zone)
 	s.Equal(testDomainName, zone.Name)
-	s.Equal(testUUID, zone.UUID)
-	s.Equal(testUUID, zone.ProjectID)
+	s.Equal(testID, zone.ID)
+	s.Equal(testID, zone.ProjectID)
 }
 
 func (s *ZoneManageSuite) TestGetZone_ok() {
-	path := fmt.Sprintf(zonePath, testUUID)
+	path := fmt.Sprintf(zonePath, testID)
 	httpmock.RegisterResponder(
 		http.MethodGet,
 		fmt.Sprintf("%s%s", testAPIURL, path),
 		httpmock.NewStringResponder(http.StatusOK, mockGetZoneResponse()),
 	)
 
-	zone, err := testClient.GetZone(testCtx, testUUID, nil)
+	zone, err := testClient.GetZone(testCtx, testID, nil)
 
 	s.Nil(err)
 	//nolint: exhaustruct
 	s.IsType(&v2.Zone{}, zone)
 	s.Equal(testDomainName, zone.Name)
-	s.Equal(testUUID, zone.UUID)
-	s.Equal(testUUID, zone.ProjectID)
+	s.Equal(testID, zone.ID)
+	s.Equal(testID, zone.ProjectID)
 }
 
 func (s *ZoneManageSuite) TestListZones_ok() {
@@ -87,14 +87,14 @@ func (s *ZoneManageSuite) TestListZones_ok() {
 }
 
 func (s *ZoneManageSuite) TestDeleteZone_ok() {
-	path := fmt.Sprintf(zonePath, testUUID)
+	path := fmt.Sprintf(zonePath, testID)
 	httpmock.RegisterResponder(
 		http.MethodDelete,
 		fmt.Sprintf("%s%s", testAPIURL, path),
 		httpmock.NewBytesResponder(http.StatusNoContent, []byte{}),
 	)
 
-	err := testClient.DeleteZone(testCtx, testUUID)
+	err := testClient.DeleteZone(testCtx, testID)
 
 	s.Nil(err)
 }

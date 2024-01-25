@@ -13,7 +13,7 @@ import (
 type (
 	// Zone represents an unmarshalled zone body from API response.
 	Zone struct {
-		UUID      string    `json:"uuid"`
+		ID        string    `json:"id"`
 		ProjectID string    `json:"project_id"`
 		Name      string    `json:"name"`
 		Comment   string    `json:"comment"`
