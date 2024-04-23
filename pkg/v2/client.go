@@ -17,7 +17,7 @@ type (
 		BaseURL        string
 	}
 	ReturnTypes interface {
-		Zone | List[Zone] | RRSet | List[RRSet] | rrsetManagedByForm
+		Zone | List[Zone] | RRSet | List[RRSet]
 	}
 )
 

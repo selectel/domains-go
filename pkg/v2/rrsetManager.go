@@ -61,10 +61,6 @@ type (
 		Comment   string       `json:"comment,omitempty"`
 		ManagedBy string       `json:"managed_by,omitempty"`
 	}
-
-	rrsetManagedByForm struct {
-		ManagedBy string `json:"managed_by"`
-	}
 )
 
 func (s *RRSet) CreationForm() (io.Reader, error) {

@@ -15,9 +15,12 @@ const (
 )
 
 type (
-	DNSClient[Z any, S any] interface {
+	DNSManager[Z any, S any] interface {
 		ZoneManager[Z]
 		RRSetManager[S]
+	}
+	DNSClient[Z any, S any] interface {
+		DNSManager[Z, S]
 		WithHeaders(headers http.Header) DNSClient[Z, S]
 	}
 
