@@ -147,3 +147,16 @@ func (s *ZoneManageSuite) TestUpdateZoneState_state_updated() {
 
 	s.Nil(err)
 }
+
+func (s *ZoneManageSuite) TestUpdateProtectionState_OK() {
+	path := fmt.Sprintf(zonePathUpdateProtection, testID)
+	httpmock.RegisterResponder(
+		http.MethodPatch,
+		fmt.Sprintf("%s%s", testAPIURL, path),
+		httpmock.NewBytesResponder(http.StatusNoContent, []byte{}),
+	)
+
+	err := testClient.UpdateProtectionState(testCtx, testID, true)
+
+	s.Nil(err)
+}
