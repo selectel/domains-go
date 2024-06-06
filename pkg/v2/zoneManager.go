@@ -40,6 +40,9 @@ type (
 	zoneUpdateState struct {
 		Disabled bool `json:"disabled"`
 	}
+	zoneProtectionState struct {
+		Protected bool `json:"protected"`
+	}
 )
 
 func (z *Zone) CreationForm() (io.Reader, error) {
@@ -118,6 +121,23 @@ func (c *Client) UpdateZoneState(ctx context.Context, zoneID string, disabled bo
 	form := bytes.NewReader(updateState)
 	r, e := c.prepareRequest(
 		ctx, http.MethodPatch, fmt.Sprintf(zonePathUpdateState, zoneID), form, nil, nil,
+	)
+	_, err = processRequest[Zone](c.httpClient, r, e)
+
+	return err
+}
+
+// UpdateProtectionState request to enable/disable zone protection from delete operation.
+func (c *Client) UpdateProtectionState(ctx context.Context, zoneID string, protected bool) error {
+	updateState, err := json.Marshal(zoneProtectionState{
+		Protected: protected,
+	})
+	if err != nil {
+		return fmt.Errorf("zone marshal: %w", err)
+	}
+	form := bytes.NewReader(updateState)
+	r, e := c.prepareRequest(
+		ctx, http.MethodPatch, fmt.Sprintf(zonePathUpdateProtection, zoneID), form, nil, nil,
 	)
 	_, err = processRequest[Zone](c.httpClient, r, e)
 

@@ -7,11 +7,12 @@ import (
 )
 
 const (
-	rootPath            = "/zones"
-	zonePath            = "/zones/%v"
-	zonePathUpdateState = "/zones/%v/state"
-	rrsetPath           = "/zones/%v/rrset"
-	singleRRSetPath     = "/zones/%v/rrset/%v"
+	rootPath                 = "/zones"
+	zonePath                 = "/zones/%v"
+	zonePathUpdateState      = "/zones/%v/state"
+	zonePathUpdateProtection = "/zones/%v/protection"
+	rrsetPath                = "/zones/%v/rrset"
+	singleRRSetPath          = "/zones/%v/rrset/%v"
 )
 
 type (
@@ -31,6 +32,7 @@ type (
 		DeleteZone(ctx context.Context, zoneID string) error
 		UpdateZoneState(ctx context.Context, zoneID string, disabled bool) error
 		UpdateZoneComment(ctx context.Context, zoneID string, comment string) error
+		UpdateProtectionState(ctx context.Context, zoneID string, protected bool) error
 	}
 
 	RRSetManager[S any] interface {
